@@ -1,5 +1,7 @@
 package com.gpaCalc;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 class Calculator {
@@ -61,16 +63,26 @@ class Calculator {
                 totalCredits += credits;
                 totalPoints += points;
 
-                System.out.println("Are you finished: y/n ");
-                String isDone = scanner.nextLine().toLowerCase();
-                if (isDone.charAt(0) == 121) {
-                    allGradesEntered = true;
-                }
+
+                boolean allFinishedResponse = false;
+                do {
+                    System.out.println("Are you finished? (Y/N) ");
+                    String isDone = scanner.nextLine().toLowerCase();
+                    if (isDone.charAt(0) == 121) {
+                        allGradesEntered = true;
+                        allFinishedResponse = true;
+                    } else if (isDone.charAt(0) == 110) {
+                        allFinishedResponse = true;
+                    } else {
+                        System.out.println("Please only enter Y or N");
+                    }
+                } while (!allFinishedResponse);
+
 
             } while (!allGradesEntered);
 
 
-            Integer gpa = totalPoints / totalCredits;
+            BigDecimal gpa = new BigDecimal(totalPoints).divide(new BigDecimal(totalCredits), 2, RoundingMode.HALF_UP );
             System.out.println("GPA: " + gpa);
         }
     }
